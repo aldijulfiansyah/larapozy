@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Livewire\Frontpage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Route::middleware([
     'auth:sanctum',
@@ -33,3 +31,11 @@ Route::middleware([
     })->name('pages');
 
 });
+
+
+Route::get('/{urlslug}', Frontpage::class);
+
+Route::get('/', function () {
+    return view('welcome');
+});
+

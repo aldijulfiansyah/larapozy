@@ -13,6 +13,7 @@ class Pages extends Component
     public $title;
     public $content;
     public $modalVisible = false;
+    public $modalConfirmDeleteVisible = false;
     public $dataId;
     
  
@@ -26,10 +27,23 @@ class Pages extends Component
     public function rules(){
         return [
             'title' => 'required',
-            'slug' => ['required', Rule::unique('pages', 'slug')],
+            'slug' => ['required', Rule::unique('pages', 'slug')->ignore($this->dataId)],
             'content' => 'required',
         ];
     }
+
+
+    
+    /**
+     * mount livewire funct
+     *
+     * @return void
+     */
+    public function mount(){
+        // reset pagination after reload
+        $this->resetPage();
+    }
+
 
 
     
@@ -85,6 +99,19 @@ class Pages extends Component
         $this->loadData();
     }
 
+    public function deleteModal($id){
+        $this->dataId = $id;
+        $this->modalConfirmDeleteVisible = true;
+        $this->loadData();
+    }
+
+
+    public function delete(){
+        // Page::destroy($this->dataId); or this
+        Page::find($this->dataId)->delete($this->dataModel());
+        $this->modalConfirmDeleteVisible = false;      
+        $this->resetPage();  
+    }
 
     
     public function update(){
@@ -145,7 +172,6 @@ class Pages extends Component
         $this->clearValue();
         $this->modalVisible = true;
     }
-
 
     
     /**
