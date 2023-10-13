@@ -20,7 +20,7 @@
                         Content
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-sm text-gray-600 leading-4 tracking-wider uppercase">
-                        Actions
+                        
                     </th>
                 </tr>
             </thead>
@@ -31,7 +31,14 @@
                         <td class="px-6 py-4 whitespace-nowrap">{{$item->title}}</td>
                         <td class="px-6 py-4 whitespace-nowrap">localhost:8000/{{$item->slug}}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{$item->content}}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">Data Actions</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <x-secondary-button wire:click="updateModal({{$item->id}})">
+                                {{ __('Update') }}
+                            </x-secondary-button>
+                            <x-danger-button wire:click="deleteModal">
+                                {{ __('Delete') }}
+                            </x-danger-button>
+                        </td>
                     </tr>
                     @endforeach
                 @else
@@ -43,7 +50,10 @@
             </tbody>
         </table>
     </div>
-    
+    <div class="mt-1 ">
+        {{ $PageData->links()}}
+
+    </div>
 
 
 
@@ -68,9 +78,16 @@
 
     {{-- Modal --}}
     <x-dialog-modal wire:model.live="modalVisible">
+        @if($dataId)
         <x-slot name="title">
-            {{ __('Save Page') }}
+            {{ __('Update Pages - Title Name : ') }} "{{$title}}"
         </x-slot>
+        @else
+        <x-slot name="title">
+            {{ __('Create Pages') }}
+        </x-slot>
+        @endif 
+        
 
         <x-slot name="content">
             <div class="mt-4">
@@ -107,9 +124,6 @@
                     <span class="text-red-600">{{ $message }}</span>
                 @enderror
             </div>
-
-
-
         </x-slot>
 
         <x-slot name="footer">
@@ -117,9 +131,15 @@
                 {{ __('Cancel') }}
             </x-secondary-button>
 
-            <x-button class="ml-3" wire:click="create" wire:loading.attr="disabled">
-                {{ __('Save') }}
+            @if($dataId)
+            <x-button class="ml-3" wire:click="update" wire:loading.attr="disabled">
+                {{ __('Update') }}
             </x-button>
+            @else
+            <x-button class="ml-3" wire:click="create" wire:loading.attr="disabled">
+                {{ __('Create') }}
+            </x-button>
+            @endif
         </x-slot>
     </x-dialog-modal>
 </div>
