@@ -1,3 +1,4 @@
 <div>
-    {{-- The Master doesn't talk, he acts. --}}
+    <h1>{{$title}}</h1>
+    <h2>{!!$content!!}</h2>
 </div>
