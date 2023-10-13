@@ -56,6 +56,21 @@ class Pages extends Component
         $this->clearValue();
     }
 
+
+    
+    /**
+     * function read from DB and paginate
+     *
+     * @return void
+     */
+    public function read(){
+        return Page::paginate(10);
+    }
+
+
+
+
+
     /**
      * this is data from Page Model
      * used for mapping
@@ -82,12 +97,6 @@ class Pages extends Component
     }
 
 
-    // modal set up
-    public function closeCreateModal(){
-        
-         $this->modalVisible = false;
-    }
-
     
     /**
      * show the form modal
@@ -108,6 +117,8 @@ class Pages extends Component
      */
     public function render()
     {
-        return view('livewire.pages');
+        return view('livewire.pages',[
+            'PageData' => $this->read(),
+        ]);
     }
 }
